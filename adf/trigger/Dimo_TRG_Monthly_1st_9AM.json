@@ -1,0 +1,24 @@
+{
+	"name": "Dimo_TRG_Monthly_1st_9AM",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "d_PL_Master_Orchestrator",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Month",
+				"interval": 1,
+				"startTime": "2026-07-17T19:17:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
