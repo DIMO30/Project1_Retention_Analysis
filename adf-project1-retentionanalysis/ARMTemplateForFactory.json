@@ -715,6 +715,37 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/dLS_KV_Retention')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dimo_TRG_Monthly_1st_9AM')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "d_PL_Master_Orchestrator",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 1,
+						"startTime": "2026-07-17T19:17:00",
+						"timeZone": "India Standard Time",
+						"schedule": {}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/d_PL_Master_Orchestrator')]"
+			]
 		}
 	]
 }
