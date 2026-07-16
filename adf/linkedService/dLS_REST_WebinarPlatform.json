@@ -1,0 +1,13 @@
+{
+	"name": "dLS_REST_WebinarPlatform",
+	"properties": {
+		"description": "This linked service will connect with the REST APIs",
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://jsonplaceholder.typicode.com",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
