@@ -1,0 +1,59 @@
+{
+	"name": "d_PL_Master_Orchestrator",
+	"properties": {
+		"activities": [
+			{
+				"name": "Dimo_Exec_Pipeline_Webinar",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "d_PL_Bronze_Webinar_Ingest",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Dimo_Exec_Pipeline_Document",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "d_PL_Bronze_Document_Ingest",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Dimo_Exec_Pipeline_PeerInsights",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "d_PL_Bronze_PeerInsights_Ingest",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Parent Pipeline"
+		},
+		"annotations": []
+	}
+}
