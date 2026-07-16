@@ -8,7 +8,7 @@
 			"server": "sql-retentionanalysis.database.windows.net",
 			"database": "SQLdb-LiveProject1",
 			"encrypt": "mandatory",
-			"trustServerCertificate": false,
+			"trustServerCertificate": true,
 			"authenticationType": "SQL",
 			"userName": "Dimo",
 			"password": {
@@ -18,6 +18,9 @@
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "sql-project1-password"
+			},
+			"alwaysEncryptedSettings": {
+				"alwaysEncryptedAkvAuthType": "ManagedIdentity"
 			}
 		}
 	}
