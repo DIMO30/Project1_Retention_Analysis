@@ -1,0 +1,66 @@
+{
+	"name": "dDS_SQL_DocumentDownloads",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dLS_SQL_DocPlatform",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Project1- Retention Analysis"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "download_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "doc_id",
+				"type": "varchar"
+			},
+			{
+				"name": "doc_title",
+				"type": "varchar"
+			},
+			{
+				"name": "doc_category",
+				"type": "varchar"
+			},
+			{
+				"name": "user_email",
+				"type": "varchar"
+			},
+			{
+				"name": "download_timestamp",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "file_size_kb",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "platform",
+				"type": "varchar"
+			},
+			{
+				"name": "is_premium_content",
+				"type": "bit"
+			},
+			{
+				"name": "created_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "document_downloads"
+		}
+	}
+}

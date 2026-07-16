@@ -1,0 +1,22 @@
+{
+	"name": "dDS_Bronze_Document_Delta",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dLS_ADLS_Retention_Lake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Project1- Retention Analysis"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "bronze"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
