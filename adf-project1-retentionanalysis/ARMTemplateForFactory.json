@@ -41,6 +41,78 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/d_PL_Bronze_PeerInsights_Ingest')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Purpose: landing/peer_insights/ se JSON file uthao → bronze/peer_insights/ mein Parquet mein copy karo",
+				"activities": [
+					{
+						"name": "DimoCopy_PeerInsights_To_Bronze",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true
+						},
+						"inputs": [
+							{
+								"referenceName": "dDS_Landing_PeerInsights_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dDS_Bronze_PeerInsights_Delta",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Child Pipelines"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/dDS_Landing_PeerInsights_JSON')]",
+				"[concat(variables('factoryId'), '/datasets/dDS_Bronze_PeerInsights_Delta')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dDS_Bronze_Document_Delta')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -84,6 +156,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"folderPath": "peerinsights",
 						"fileSystem": "bronze"
 					},
 					"compressionCodec": "snappy"
