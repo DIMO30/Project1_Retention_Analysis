@@ -2,7 +2,7 @@
 	"name": "Dimo_TRG_Monthly_1st_9AM",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
