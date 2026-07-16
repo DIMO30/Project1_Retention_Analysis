@@ -1,0 +1,24 @@
+{
+	"name": "dLS_SQL_DocPlatform",
+	"properties": {
+		"description": "This is a linked service for database created by Vaibhav",
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "sql-retentionanalysis.database.windows.net",
+			"database": "SQLdb-LiveProject1",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "Dimo",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "dLS_KV_Retention",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-project1-password"
+			}
+		}
+	}
+}
