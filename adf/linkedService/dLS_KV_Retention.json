@@ -1,0 +1,11 @@
+{
+	"name": "dLS_KV_Retention",
+	"properties": {
+		"description": "This is a Key Vault linked service made by Vaibhav. ",
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://keyvault-liveproject1.vault.azure.net/"
+		}
+	}
+}
