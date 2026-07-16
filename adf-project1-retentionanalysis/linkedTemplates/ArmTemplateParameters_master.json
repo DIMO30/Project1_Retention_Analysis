@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-project1-retentionanalysis"
+		},
+		"dLS_ADLS_Retention_Lake_accountKey": {
+			"value": ""
+		},
+		"dLS_ADLS_Retention_Lake_properties_typeProperties_url": {
+			"value": "https://retentionanalysis.dfs.core.windows.net/"
+		},
+		"dLS_KV_Retention_properties_typeProperties_baseUrl": {
+			"value": "https://keyvault-liveproject1.vault.azure.net/"
+		},
+		"dLS_REST_WebinarPlatform_properties_typeProperties_url": {
+			"value": "https://jsonplaceholder.typicode.com"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_server": {
+			"value": "sql-retentionanalysis.database.windows.net"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_database": {
+			"value": "SQLdb-LiveProject1"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_userName": {
+			"value": "Dimo"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

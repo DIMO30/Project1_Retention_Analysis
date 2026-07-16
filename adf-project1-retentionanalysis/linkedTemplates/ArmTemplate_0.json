@@ -1,0 +1,428 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-project1-retentionanalysis"
+		},
+		"dLS_ADLS_Retention_Lake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'dLS_ADLS_Retention_Lake'"
+		},
+		"dLS_ADLS_Retention_Lake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://retentionanalysis.dfs.core.windows.net/"
+		},
+		"dLS_KV_Retention_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://keyvault-liveproject1.vault.azure.net/"
+		},
+		"dLS_REST_WebinarPlatform_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jsonplaceholder.typicode.com"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sql-retentionanalysis.database.windows.net"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SQLdb-LiveProject1"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Dimo"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/dLS_ADLS_Retention_Lake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This is Vaibhav's linked service for ADLS",
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('dLS_ADLS_Retention_Lake_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('dLS_ADLS_Retention_Lake_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dLS_KV_Retention')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This is a Key Vault linked service made by Vaibhav. ",
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('dLS_KV_Retention_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dLS_REST_WebinarPlatform')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This linked service will connect with the REST APIs",
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('dLS_REST_WebinarPlatform_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dDS_Bronze_Document_Delta')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dLS_ADLS_Retention_Lake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Project1- Retention Analysis"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "bronze"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dLS_ADLS_Retention_Lake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dDS_Bronze_PeerInsights_Delta')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dLS_ADLS_Retention_Lake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Project1- Retention Analysis"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "bronze"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dLS_ADLS_Retention_Lake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dDS_Bronze_Webinar_Delta')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dLS_ADLS_Retention_Lake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Project1- Retention Analysis"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "bronze"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dLS_ADLS_Retention_Lake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dDS_Landing_PeerInsights_JSON')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dLS_ADLS_Retention_Lake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Project1- Retention Analysis"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "peer_insights_raw.json",
+						"folderPath": "peer_insights/2026/7",
+						"fileSystem": "landing"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"source": {
+							"type": "string"
+						},
+						"extract_date": {
+							"type": "string"
+						},
+						"total_reviews": {
+							"type": "integer"
+						},
+						"reviews": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"review_id": {
+										"type": "string"
+									},
+									"user_email": {
+										"type": "string"
+									},
+									"product_reviewed": {
+										"type": "string"
+									},
+									"rating": {
+										"type": "integer"
+									},
+									"review_text": {
+										"type": "string"
+									},
+									"review_date": {
+										"type": "string"
+									},
+									"view_count": {
+										"type": "integer"
+									},
+									"helpful_count": {
+										"type": "integer"
+									},
+									"product_category": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dLS_ADLS_Retention_Lake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dDS_Landing_Webinar_JSON')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dLS_ADLS_Retention_Lake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Project1- Retention Analysis"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "webinar_events_raw.json",
+						"folderPath": "webinar/2026/7",
+						"fileSystem": "landing"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"source": {
+							"type": "string"
+						},
+						"extract_date": {
+							"type": "string"
+						},
+						"total_events": {
+							"type": "integer"
+						},
+						"events": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"event_id": {
+										"type": "string"
+									},
+									"webinar_id": {
+										"type": "string"
+									},
+									"webinar_title": {
+										"type": "string"
+									},
+									"user_id": {
+										"type": "integer"
+									},
+									"event_type": {
+										"type": "string"
+									},
+									"event_timestamp": {
+										"type": "string"
+									},
+									"duration_minutes": {
+										"type": "integer"
+									},
+									"webinar_date": {
+										"type": "string"
+									},
+									"attendee_email": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dLS_ADLS_Retention_Lake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dLS_SQL_DocPlatform')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This is a linked service for database created by Vaibhav",
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('dLS_SQL_DocPlatform_properties_typeProperties_server')]",
+					"database": "[parameters('dLS_SQL_DocPlatform_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('dLS_SQL_DocPlatform_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "dLS_KV_Retention",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "sql-project1-password"
+					},
+					"alwaysEncryptedSettings": {
+						"alwaysEncryptedAkvAuthType": "ManagedIdentity"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dLS_KV_Retention')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dDS_SQL_DocumentDownloads')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dLS_SQL_DocPlatform",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Project1- Retention Analysis"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "download_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "doc_id",
+						"type": "varchar"
+					},
+					{
+						"name": "doc_title",
+						"type": "varchar"
+					},
+					{
+						"name": "doc_category",
+						"type": "varchar"
+					},
+					{
+						"name": "user_email",
+						"type": "varchar"
+					},
+					{
+						"name": "download_timestamp",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "file_size_kb",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "platform",
+						"type": "varchar"
+					},
+					{
+						"name": "is_premium_content",
+						"type": "bit"
+					},
+					{
+						"name": "created_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "document_downloads"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dLS_SQL_DocPlatform')]"
+			]
+		}
+	]
+}

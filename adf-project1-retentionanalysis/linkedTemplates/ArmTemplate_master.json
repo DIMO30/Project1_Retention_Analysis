@@ -1,0 +1,91 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-project1-retentionanalysis"
+		},
+		"dLS_ADLS_Retention_Lake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'dLS_ADLS_Retention_Lake'"
+		},
+		"dLS_ADLS_Retention_Lake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://retentionanalysis.dfs.core.windows.net/"
+		},
+		"dLS_KV_Retention_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://keyvault-liveproject1.vault.azure.net/"
+		},
+		"dLS_REST_WebinarPlatform_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jsonplaceholder.typicode.com"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sql-retentionanalysis.database.windows.net"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SQLdb-LiveProject1"
+		},
+		"dLS_SQL_DocPlatform_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Dimo"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-project1-retentionanalysis_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"dLS_ADLS_Retention_Lake_accountKey": {
+						"value": "[parameters('dLS_ADLS_Retention_Lake_accountKey')]"
+					},
+					"dLS_ADLS_Retention_Lake_properties_typeProperties_url": {
+						"value": "[parameters('dLS_ADLS_Retention_Lake_properties_typeProperties_url')]"
+					},
+					"dLS_KV_Retention_properties_typeProperties_baseUrl": {
+						"value": "[parameters('dLS_KV_Retention_properties_typeProperties_baseUrl')]"
+					},
+					"dLS_REST_WebinarPlatform_properties_typeProperties_url": {
+						"value": "[parameters('dLS_REST_WebinarPlatform_properties_typeProperties_url')]"
+					},
+					"dLS_SQL_DocPlatform_properties_typeProperties_server": {
+						"value": "[parameters('dLS_SQL_DocPlatform_properties_typeProperties_server')]"
+					},
+					"dLS_SQL_DocPlatform_properties_typeProperties_database": {
+						"value": "[parameters('dLS_SQL_DocPlatform_properties_typeProperties_database')]"
+					},
+					"dLS_SQL_DocPlatform_properties_typeProperties_userName": {
+						"value": "[parameters('dLS_SQL_DocPlatform_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
