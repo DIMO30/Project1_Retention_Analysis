@@ -1,9 +1,9 @@
 {
-	"name": "d_PL_Bronze_Document_Ingest",
+	"name": "d_PL_Bronze_Webinar_Ingest",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_DocumentDownloads_To_Bronze",
+				"name": "dimo_Copy_WebinarEvents_To_Bronze",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,10 +16,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"isolationLevel": "ReadCommitted",
-						"partitionOption": "None"
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
 					},
 					"sink": {
 						"type": "ParquetSink",
@@ -31,25 +36,17 @@
 						}
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": true,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
+					"enableSkipIncompatibleRow": true
 				},
 				"inputs": [
 					{
-						"referenceName": "dDS_SQL_DocumentDownloads",
+						"referenceName": "dDS_Landing_Webinar_JSON",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "dDS_Bronze_Document_Delta",
+						"referenceName": "dDS_Bronze_Webinar_Delta",
 						"type": "DatasetReference"
 					}
 				]
