@@ -28,12 +28,12 @@
 						}
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "JsonSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
 						},
 						"formatSettings": {
-							"type": "ParquetWriteSettings"
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false,
@@ -47,7 +47,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dDS_Bronze_PeerInsights_Delta",
+						"referenceName": "dDS_Bronze_PeerInsights_JSON",
 						"type": "DatasetReference"
 					}
 				]

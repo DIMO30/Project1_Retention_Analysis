@@ -1,0 +1,19 @@
+{
+	"name": "dDS_Bronze_PeerInsights_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dLS_ADLS_Retention_Lake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "peerinsights",
+				"fileSystem": "bronze"
+			}
+		},
+		"schema": {}
+	}
+}
