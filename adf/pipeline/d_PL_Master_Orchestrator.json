@@ -88,6 +88,42 @@
 					"referenceName": "dimoLS_Databricks_Retention",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Dimo_Act_on_Any_Failure",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Dimo_Exec_Pipeline_Document",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "Dimo_Exec_Pipeline_Webinar",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "Dimo_Exec_Pipeline_PeerInsights",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://webhook.site/xyz"
+				}
 			}
 		],
 		"folder": {
