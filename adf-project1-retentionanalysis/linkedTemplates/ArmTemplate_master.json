@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'dLS_ADLS_Retention_Lake'"
 		},
+		"dimoLS_Databricks_Retention_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'dimoLS_Databricks_Retention'"
+		},
 		"dLS_ADLS_Retention_Lake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://retentionanalysis.dfs.core.windows.net/"
@@ -34,6 +38,10 @@
 		"dLS_SQL_DocPlatform_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "Dimo"
+		},
+		"dimoLS_Databricks_Retention_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0715-140757-jwp5y5cs"
 		},
 		"containerUri": {
 			"type": "string",
@@ -65,6 +73,9 @@
 					"dLS_ADLS_Retention_Lake_accountKey": {
 						"value": "[parameters('dLS_ADLS_Retention_Lake_accountKey')]"
 					},
+					"dimoLS_Databricks_Retention_accessToken": {
+						"value": "[parameters('dimoLS_Databricks_Retention_accessToken')]"
+					},
 					"dLS_ADLS_Retention_Lake_properties_typeProperties_url": {
 						"value": "[parameters('dLS_ADLS_Retention_Lake_properties_typeProperties_url')]"
 					},
@@ -73,6 +84,9 @@
 					},
 					"dLS_REST_WebinarPlatform_properties_typeProperties_url": {
 						"value": "[parameters('dLS_REST_WebinarPlatform_properties_typeProperties_url')]"
+					},
+					"dimoLS_Databricks_Retention_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('dimoLS_Databricks_Retention_properties_typeProperties_existingClusterId')]"
 					},
 					"dLS_SQL_DocPlatform_properties_typeProperties_server": {
 						"value": "[parameters('dLS_SQL_DocPlatform_properties_typeProperties_server')]"

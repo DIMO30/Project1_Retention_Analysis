@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'dLS_ADLS_Retention_Lake'"
 		},
+		"dimoLS_Databricks_Retention_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'dimoLS_Databricks_Retention'"
+		},
 		"dLS_ADLS_Retention_Lake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://retentionanalysis.dfs.core.windows.net/"
@@ -34,6 +38,10 @@
 		"dLS_SQL_DocPlatform_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "Dimo"
+		},
+		"dimoLS_Databricks_Retention_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0715-140757-jwp5y5cs"
 		}
 	},
 	"variables": {
@@ -313,6 +321,45 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "Dimo_Exec_Notebook_Silver_Standardize",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Dimo_Exec_Pipeline_Webinar",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Dimo_Exec_Pipeline_Document",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Dimo_Exec_Pipeline_PeerInsights",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/vaibhav.dimri23@gmail.com/Dimo_Retention_Analysis/Silver/01_silver_standardize"
+						},
+						"linkedServiceName": {
+							"referenceName": "dimoLS_Databricks_Retention",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -326,7 +373,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/d_PL_Bronze_Webinar_Ingest')]",
 				"[concat(variables('factoryId'), '/pipelines/d_PL_Bronze_Document_Ingest')]",
-				"[concat(variables('factoryId'), '/pipelines/d_PL_Bronze_PeerInsights_Ingest')]"
+				"[concat(variables('factoryId'), '/pipelines/d_PL_Bronze_PeerInsights_Ingest')]",
+				"[concat(variables('factoryId'), '/linkedServices/dimoLS_Databricks_Retention')]"
 			]
 		},
 		{
@@ -763,6 +811,24 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/dLS_KV_Retention')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimoLS_Databricks_Retention')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405606861759879.19.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('dimoLS_Databricks_Retention_accessToken')]"
+					},
+					"existingClusterId": "[parameters('dimoLS_Databricks_Retention_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Dimo_TRG_Monthly_1st_9AM')]",
