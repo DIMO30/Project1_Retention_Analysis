@@ -53,7 +53,26 @@
 			{
 				"name": "Dimo_Exec_Notebook_Silver_Standardize",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Dimo_Exec_Pipeline_Webinar",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Dimo_Exec_Pipeline_Document",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Dimo_Exec_Pipeline_PeerInsights",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -61,7 +80,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/vaibhav.dimri23@gmail.com/Dimo_Retention_Analysis/Silver/01_silver_standardize"
+				},
+				"linkedServiceName": {
+					"referenceName": "dimoLS_Databricks_Retention",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"folder": {
