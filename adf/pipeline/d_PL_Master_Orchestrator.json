@@ -122,7 +122,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "POST",
-					"url": "https://webhook.site/xyz"
+					"url": "https://webhook.site/47accdc2-a0b5-4acc-ba17-d2a005db6a87",
+					"body": {
+						"status": "failure",
+						"pipeline": "@{pipeline().PipelineName}",
+						"message": "Pipeline failed - check ADF Monitor"
+					}
 				}
 			}
 		],
